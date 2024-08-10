@@ -1,3 +1,5 @@
+<?php $mensaje = ''; ?>
+<?php include('conf/conn.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <?php include('recurrentes/head.php'); ?>
@@ -32,24 +34,19 @@
                                         <th>Accionez</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
-                                    <!-- Example rows; you would dynamically generate these rows with your data -->
+                                    <?php $all_reg = all_reg("users_om", "", $conn); ?>
+                                    <?php foreach ($all_reg as $key => $value) { ?>
                                     <tr>
-                                        <td>1</td>
-                                        <td>john_doe</td>
-                                        <td>john@example.com</td>
-                                        <td>John</td>
-                                        <td>Doe</td>
-                                        <td>Doe</td>
+                                        <td><?php echo $value['id']; ?></td>
+                                        <td><?php echo $value['username']; ?></td>
+                                        <td><?php echo $value['email']; ?></td>
+                                        <td><?php echo $value['nombre']. ' ' .$value['apellido']; ?></td>
+                                        <td><?php echo $value['tipo_user']; ?></td>
+                                        <td><?php echo $value['id']; ?></td>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>jane_doe</td>
-                                        <td>jane@example.com</td>
-                                        <td>Jane</td>
-                                        <td>Doe</td>
-                                        <td>Doe</td>
-                                    </tr>
+                                    <?php } ?>
                                     <!-- Add more rows as needed -->
                                 </tbody>
                             </table>
@@ -62,13 +59,7 @@
     <?php include('recurrentes/foot.php'); ?>
     
     <!-- DataTables JS and CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+   
 
-    <script>
-        $(document).ready(function() {
-            $('#dataTable').DataTable();
-        });
-    </script>
 </body>
 </html>
