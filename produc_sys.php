@@ -1,11 +1,11 @@
 <?php $mensaje = ''; ?>
 <?php include('conf/conn.php'); ?>
-<?php if(isset($_POST['reg_user'])){
 
-$_POST['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-unset($_POST['reg_user']);
+<?php if(isset($_POST['reg_product'])){
+unset($_POST['photo']);
+unset($_POST['reg_product']);
 $_POST['stat'] = 1;
-insert_reg_doc("users_om", $_POST, $conn);
+insert_reg("products_om", $_POST, $conn);
 $mensaje = 'Registre Realizado';
 }
 
@@ -55,7 +55,7 @@ if(isset($_POST['eliminar_user'])){
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Registrar Usuario
+            Registrar Producto
         </button>
 
         <!-- Modal -->
@@ -63,47 +63,53 @@ if(isset($_POST['eliminar_user'])){
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar Usuario</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar Producto</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="" method="POST">
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <select class="form-control" id="tipo_usuario" name="tipo_user">
-                                <option value="">Seleccionar Tipo de Usuario</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Cliente</option>
-                                <option value="3">Partner</option>
+                            <input class="form-control" type="text" placeholder="Titulo" name="titulo" />
+                            <label for="username">Titulo</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" name="descripcion" id=""></textarea>
+                            <label for="email">Descripcion</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-control" id="id_business_partner" name="id_business_partner">
+                                <option value="">Seleccionar Partner</option>
+                                <?php $all_reg = all_reg_partner($conn); ?>
+                                <?php foreach ($all_reg as $key => $value) { ?>
+                                    <option value="<?php echo $value['id']; ?>"><?php echo $value['nombre']. ' ' .$value['apellido']; ?></option>    
+                                <?php } ?>
                             </select>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="username" type="text" placeholder="Username" name="username" />
-                            <label for="username">Username</label>
+                            <select class="form-control" id="id_categoria" name="id_categoria">
+                                <option value="">Seleccionar Categoria</option>
+                                <?php $all_reg = all_reg("categorias_om", "", $conn); ?>
+                                <?php foreach ($all_reg as $key => $value) { ?>
+                                    <option value="<?php echo $value['id']; ?>"><?php echo $value['descripcion']; ?></option>    
+                                <?php } ?>
+                            </select>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="email" type="email" placeholder="name@example.com" name="email" />
-                            <label for="email">Email address</label>
+                            <input class="form-control" id="username" type="text" placeholder="Username" name="cantidad" />
+                            <label for="username">Cantidad</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="firstName" type="text" placeholder="First Name" name="nombre" />
-                            <label for="firstName">First Name</label>
+                            <input class="form-control" id="email" type="text" placeholder="name@example.com" name="precio" />
+                            <label for="email">Precio</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control" id="lastName" type="text" placeholder="Last Name" name="apellido" />
-                            <label for="lastName">Last Name</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="password" type="password" placeholder="Password" />
-                            <label for="password">Password</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="confirmPassword" type="password" placeholder="Confirm Password" name="pass" />
-                            <label for="confirmPassword">Confirm Password</label>
+                            <input class="form-control" type="file" name="photo" />
+                            <label for="email">Subir Imagen</label>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" name="reg_user">Registrar </button>
+                        <button type="submit" class="btn btn-primary" name="reg_product">Registrar </button>
                     </div>
                 </form>
                 </div>
@@ -120,23 +126,25 @@ if(isset($_POST['eliminar_user'])){
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Nombre</th>
-                                        <th>Tipo de Usuario</th>
+                                        <th>Titulo</th>
+                                        <th>Partner</th>
+                                        <th>Categoria</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
                                         <th>Accionez</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <?php $all_reg = all_reg("users_om", "", $conn); ?>
+                                    <?php $all_reg = all_reg_product_partner($conn); ?>
                                     <?php foreach ($all_reg as $key => $value) { ?>
                                     <tr>
                                         <td><?php echo $value['id']; ?></td>
-                                        <td><?php echo $value['username']; ?></td>
-                                        <td><?php echo $value['email']; ?></td>
+                                        <td><?php echo $value['titulo']; ?></td>
                                         <td><?php echo $value['nombre']. ' ' .$value['apellido']; ?></td>
-                                        <td><?php if($value['tipo_user'] == 1){ echo 'Admin'; }elseif($value['tipo_user'] == 2){ echo 'Cliente'; }else{ echo 'Partner'; } ?></td>
+                                        <td><?php echo $value['descripcion']; ?></td>
+                                        <td><?php echo $value['precio']; ?></td>
+                                        <td><?php echo $value['cantidad']; ?></td>
                                         <td>
                                             <a href="" class="btn btn-primary sm" data-bs-toggle="modal" data-bs-target="#EditModal<?php echo $value['id']; ?>"><i class="bi bi-pencil-fill"></i></a>
                                             <a href="" class="btn btn-danger sm" data-bs-toggle="modal" data-bs-target="#EliminarUser<?php echo $value['id']; ?>"><i class="bi bi-trash"></i></a>

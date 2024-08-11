@@ -23,7 +23,7 @@
                                 <li><a class="dropdown-item" href="#!">Mis Compras</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="#!">Mis Promosiones</a></li>
-                                <li><a class="dropdown-item" href="#!">Reg. Productos</a></li>
+                                <li><a class="dropdown-item" href="produc_sys.php">Reg. Productos</a></li>
                                 <li><a class="dropdown-item" href="users_sys.php">Reg. Usuarios</a></li>
                                 <li><a class="dropdown-item" href="#!">Salir</a></li>
                             </ul>
