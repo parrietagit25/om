@@ -17,36 +17,32 @@
 
           // Incluir el autoload de Composer para PHPMailer
 
-        $mail = new PHPMailer(true);
+          $mail = new PHPMailer(true);
 
-        try {
-            // Configuración del servidor de correo SMTP
-            $mail->isSMTP();
-            $mail->Host = 'mail.ofmptygroup.com';  // Servidor SMTP
-            $mail->SMTPAuth = true;
-            $mail->Username = 'pedro.arrieta@ofmptygroup.com';  // Usuario SMTP
-            $mail->Password = '';  // Contraseña SMTP
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Encriptación TLS
-            $mail->Port = 465;  // Puerto TCP para TLS
-
-            // Destinatarios
-            $mail->setFrom('ofertasymas@ofmptygroup.com', 'Ofmpt y Group');  // Correo y nombre del remitente
-            $mail->addAddress('destinatario@example.com', 'Nombre del Destinatario');  // Añadir destinatario
-
-            // Contenido del correo
-            $mail->isHTML(true);  // Establecer el correo como HTML
-            $mail->Subject = 'Aquí está tu PDF';
-            $mail->Body = 'Este es el cuerpo del correo. Adjunto encontrarás el PDF que solicitaste.';
-
-            // Adjuntar el archivo PDF generado
-            $mail->addAttachment('documento.pdf');  // Adjuntar el PDF
-
-            // Enviar el correo
-            $mail->send();
-            echo 'El mensaje ha sido enviado con éxito';
-        } catch (Exception $e) {
-            echo "El mensaje no pudo ser enviado. Error de PHPMailer: {$mail->ErrorInfo}";
-        }
+          try {
+              // Configuración del servidor SMTP de Gmail
+              $mail->isSMTP();
+              //$mail->SMTPDebug = 2;
+              $mail->Host = 'smtp.gmail.com';  // Servidor SMTP de Gmail
+              $mail->SMTPAuth = true;  // Habilitar la autenticación SMTP
+              $mail->Username = 'tayronperez17@gmail.com';  // Tu dirección de correo electrónico de Gmail
+              $mail->Password = '';  // Tu contraseña de Gmail o App Password wvww iwnx mdeq ssbi
+              $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Habilitar TLS encriptación wvwwiwnxmdeqssbi
+              $mail->Port = 587;  // Puerto TCP para TLS
+          
+              // Configuración adicional...
+              $mail->setFrom('ofertasymas@ofmptygroup.com', 'Ofertas&Mas');
+              $mail->addAddress($_POST['email'], $_POST['nombre']);
+              $mail->isHTML(true);
+              $mail->Subject = 'Bienvenido a Ofertas&Mas';
+              $mail->Body    = 'Usted se ha registrado en la plataforma Ofertas & Mas, ya puede ingresar al sistema y adquirir nuetras ofertas';
+              $mail->AltBody = 'Usted se ha registrado en la plataforma Ofertas & Mas, ya puede ingresar al sistema y adquirir nuetras ofertas';
+          
+              $mail->send();
+              echo 'El mensaje ha sido enviado con éxito';
+          } catch (Exception $e) {
+              echo "El mensaje no pudo ser enviado. Error de PHPMailer: {$mail->ErrorInfo}";
+          }
 
 } ?>
 <!DOCTYPE html>
