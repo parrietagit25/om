@@ -12,3 +12,39 @@
         $('#dataTable').DataTable();
     });
 </script>
+<script>
+$(document).ready(function() {
+    $('input[name="cantidad"]').on('input', function() {
+        var cantidad = $(this).val(); 
+        var precio = parseFloat($(this).closest('.card-body').find('.precio-unitario').text());
+        var total = cantidad * precio; 
+        $(this).closest('.card-body').find('.precio-total').text(total.toFixed(2) + ' $'); 
+    });
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btn-comprar').addEventListener('click', function(e) {
+        e.preventDefault(); 
+        let formData = new FormData();
+        let cantidad = document.querySelector('input[name="cantidad"]').value;
+        let precio = document.querySelector('.precio-total').textContent;
+        let idProducto = document.querySelector('.id_producto').value;
+        formData.append('cantidad', cantidad);
+        formData.append('precio', precio);
+        formData.append('id_producto', idProducto);
+        fetch('detalle_compra.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())  
+        .then(data => {
+            console.log('Success:', 'Compra Realizada');
+            alert(data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+});
+</script>

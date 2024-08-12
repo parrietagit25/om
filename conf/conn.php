@@ -24,7 +24,7 @@ function insert_reg($tabla, $datos, $conn){
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 
-    $conn->close();
+    //$conn->close();
 }
 
 function insert_reg_doc($tabla, $datos, $conn){
@@ -50,7 +50,7 @@ function all_reg($tabla, $where, $conn){
         $registros[] = $row;
     }
     return $registros;
-    $conn->close();
+    //$conn->close();
 }
 
 function all_reg_product_partner($conn){
@@ -62,7 +62,10 @@ function all_reg_product_partner($conn){
                          u.apellido, 
                          p.precio, 
                          p.cantidad, 
-                         c.descripcion
+                         c.descripcion, 
+                         p.id_business_partner, 
+                         p.id_categoria, 
+                         p.photo
                          FROM products_om p inner join users_om u on p.id_business_partner = u.id
                                             inner join categorias_om c on p.id_categoria = c.id");
     $registros = [];
@@ -70,7 +73,34 @@ function all_reg_product_partner($conn){
         $registros[] = $row;
     }
     return $registros;
-    $conn->close();
+    //$conn->close();
+}
+
+function reg_product_partner_id($conn, $id_pro){
+
+    $reg = $conn->query("SELECT 
+                            p.id, 
+                            p.titulo, 
+                            p.descripcion, 
+                            u.nombre, 
+                            u.apellido, 
+                            p.precio, 
+                            p.cantidad, 
+                            c.descripcion, 
+                            p.id_business_partner, 
+                            p.id_categoria, 
+                            p.photo
+                            FROM products_om p inner join users_om u on p.id_business_partner = u.id
+                                            inner join categorias_om c on p.id_categoria = c.id
+                            WHERE
+                            p.id = '".$id_pro."'");
+    $registros = [];
+    while($row = $reg->fetch_assoc()) {
+    $registros[] = $row;
+    }
+    return $registros;
+    //$conn->close();
+
 }
 
 function all_reg_partner($conn){
@@ -102,6 +132,15 @@ function actualizarRegistro($tabla, $datos, $condicion, $conn) {
 function eliminar_reg($tabla, $condicion, $conn){
     $reg = $conn->query("DELETE FROM $tabla WHERE $condicion");
     echo "Registro Eliminado";
+}
+
+function ultimo_id($tabla, $conn){
+    $reg = $conn->query("SELECT max(id) as id FROM $tabla");
+    $registros = [];
+    while($row = $reg->fetch_assoc()) {
+        $registros[] = $row;
+    }
+    return $registros;
 }
 
 

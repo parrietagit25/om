@@ -1,3 +1,8 @@
+<?php 
+session_start();
+if(!isset($_SESSION['user_id'])){ 
+    header("Location: index.php");
+    } ?>
 <?php $mensaje = ''; ?>
 <?php include('conf/conn.php'); ?>
 <?php if(isset($_POST['reg_user'])){

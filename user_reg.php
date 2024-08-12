@@ -1,3 +1,7 @@
+<?php require 'vendor/autoload.php'; 
+        use PHPMailer\PHPMailer\PHPMailer;
+        use PHPMailer\PHPMailer\Exception;
+?>
 <?php $mensaje = ''; ?>
 <?php include('conf/conn.php'); ?>
 <?php if(isset($_POST['reg_ueer'])){
@@ -10,6 +14,40 @@
         insert_reg("users_om", $_POST, $conn);
 
         $mensaje = 'Registre Realizado';
+
+          // Incluir el autoload de Composer para PHPMailer
+
+        $mail = new PHPMailer(true);
+
+        try {
+            // Configuración del servidor de correo SMTP
+            $mail->isSMTP();
+            $mail->Host = 'mail.ofmptygroup.com';  // Servidor SMTP
+            $mail->SMTPAuth = true;
+            $mail->Username = 'pedro.arrieta@ofmptygroup.com';  // Usuario SMTP
+            $mail->Password = '';  // Contraseña SMTP
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Encriptación TLS
+            $mail->Port = 465;  // Puerto TCP para TLS
+
+            // Destinatarios
+            $mail->setFrom('ofertasymas@ofmptygroup.com', 'Ofmpt y Group');  // Correo y nombre del remitente
+            $mail->addAddress('destinatario@example.com', 'Nombre del Destinatario');  // Añadir destinatario
+
+            // Contenido del correo
+            $mail->isHTML(true);  // Establecer el correo como HTML
+            $mail->Subject = 'Aquí está tu PDF';
+            $mail->Body = 'Este es el cuerpo del correo. Adjunto encontrarás el PDF que solicitaste.';
+
+            // Adjuntar el archivo PDF generado
+            $mail->addAttachment('documento.pdf');  // Adjuntar el PDF
+
+            // Enviar el correo
+            $mail->send();
+            echo 'El mensaje ha sido enviado con éxito';
+        } catch (Exception $e) {
+            echo "El mensaje no pudo ser enviado. Error de PHPMailer: {$mail->ErrorInfo}";
+        }
+
 } ?>
 <!DOCTYPE html>
 <html lang="en">

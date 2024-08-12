@@ -1,33 +1,82 @@
+<?php 
+session_start();
+if(!isset($_SESSION['user_id'])){ 
+    header("Location: index.php");
+    } ?>
 <?php $mensaje = ''; ?>
 <?php include('conf/conn.php'); ?>
 
 <?php if(isset($_POST['reg_product'])){
+
 unset($_POST['photo']);
 unset($_POST['reg_product']);
 $_POST['stat'] = 1;
 insert_reg("products_om", $_POST, $conn);
-$mensaje = 'Registre Realizado';
+$ultimo_id = ultimo_id("products_om", $conn);
+
+if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] != 4) {
+
+    foreach ($ultimo_id as $key => $value) {
+        $id_ulti = $value['id'];
+    }
+
+    $nombre = $conn->real_escape_string($_POST['titulo']);
+    $target_dir = "img/";
+    $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
+        //echo "El archivo ". htmlspecialchars(basename($_FILES["photo"]["name"])). " ha sido subido.";
+        $sql = "UPDATE products_om SET photo = '".$target_file."' WHERE id = '".$id_ulti."'";
+        if ($conn->query($sql) === TRUE) {
+            //echo "Registro guardado correctamente en la base de datos.";
+        } else {
+            //echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    } else {
+        //echo "Lo siento, hubo un error al subir tu archivo.";
+    }
 }
 
-if(isset($_POST['actualizar_user'])){
+$mensaje = 'Registre Realizado';
 
-    if($_POST['pass'] != ''){
-    $_POST['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-    }else{
-        unset($_POST['pass']);    
+}
+
+if(isset($_POST['update_product'])){
+
+    //unset($_POST['photo']);
+    unset($_POST['update_product']);
+    $condicion = " id =".$_POST['id_product'];  
+
+    if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] != 4) {
+
+        $nombre = $conn->real_escape_string($_POST['titulo']);
+        $target_dir = "img/";
+        $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
+            $sql = "UPDATE products_om SET photo = '".$target_file."' WHERE id = '".$_POST['id_product']."'";
+            if ($conn->query($sql) === TRUE) {
+            } else {
+            }
+        } else {
+        }
     }
-    unset($_POST['actualizar_user']);
-    $condicion = " id =".$_POST['id_user'];
-    unset($_POST['id_user']);
-    actualizarRegistro("users_om", $_POST, $condicion, $conn);    
-    $mensaje = 'Registre Actualizado';
+
+    unset($_POST['id_product']);
+    actualizarRegistro("products_om", $_POST, $condicion, $conn);  
+
+    $mensaje = 'Registro Actualizado';
     
 }
 
-if(isset($_POST['eliminar_user'])){
+if(isset($_POST['eliminar_product'])){
 
-    $condicion = " id =".$_POST['id_user'];
-    eliminar_reg("users_om", $condicion, $conn);    
+    $condicion = " id =".$_POST['id_product'];
+    eliminar_reg("products_om", $condicion, $conn);    
     $mensaje = 'Registre Eliminado';
     
 }
@@ -66,7 +115,7 @@ if(isset($_POST['eliminar_user'])){
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar Producto</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="form-floating mb-3">
                             <input class="form-control" type="text" placeholder="Titulo" name="titulo" />
@@ -126,6 +175,7 @@ if(isset($_POST['eliminar_user'])){
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Foto</th>
                                         <th>Titulo</th>
                                         <th>Partner</th>
                                         <th>Categoria</th>
@@ -140,6 +190,7 @@ if(isset($_POST['eliminar_user'])){
                                     <?php foreach ($all_reg as $key => $value) { ?>
                                     <tr>
                                         <td><?php echo $value['id']; ?></td>
+                                        <td><img src="<?php echo $value['photo']; ?>" width="100"> </td>
                                         <td><?php echo $value['titulo']; ?></td>
                                         <td><?php echo $value['nombre']. ' ' .$value['apellido']; ?></td>
                                         <td><?php echo $value['descripcion']; ?></td>
@@ -155,44 +206,58 @@ if(isset($_POST['eliminar_user'])){
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar Usuario</h1>
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Productos</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="" method="POST">
+                                            <form action="" method="POST" enctype="multipart/form-data">
                                                 <div class="modal-body">
                                                     <div class="form-floating mb-3">
-                                                        <select class="form-control" id="tipo_usuario" name="tipo_user">
-                                                            <option value="">Seleccionar Tipo de Usuario</option>
-                                                            <option value="1" <?php if($value['tipo_user'] == 1){ echo 'selected'; } ?>>Admin</option>
-                                                            <option value="2" <?php if($value['tipo_user'] == 2){ echo 'selected'; } ?>>Cliente</option>
-                                                            <option value="3" <?php if($value['tipo_user'] == 3){ echo 'selected'; } ?>>Partner</option>
+                                                        <input class="form-control" type="text" placeholder="Titulo" name="titulo" value="<?php echo $value['titulo']; ?>" />
+                                                        <label for="username">Titulo</label>
+                                                    </div>
+                                                    <div class="form-floating mb-3">
+                                                        <textarea class="form-control" name="descripcion" id=""><?php echo $value['descripcion']; ?></textarea>
+                                                        <label for="email">Descripcion</label>
+                                                    </div>
+                                                    <div class="form-floating mb-3">
+                                                        <select class="form-control" id="id_business_partner" name="id_business_partner">
+                                                            <option value="">Seleccionar Partner</option>
+                                                            <?php $all_reg = all_reg_partner($conn); ?>
+                                                            <?php foreach ($all_reg as $key => $value2) { ?>
+                                                                <option value="<?php echo $value2['id']; ?>" <?php if($value2['id'] == $value['id_business_partner']){ echo 'selected'; } ?>><?php echo $value2['nombre']. ' ' .$value2['apellido']; ?></option>    
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <input class="form-control" value="<?php echo $value['username']; ?>" id="username" type="text" placeholder="Username" name="username" />
-                                                        <label for="username">Username</label>
+                                                        <select class="form-control" id="id_categoria" name="id_categoria">
+                                                            <option value="">Seleccionar Categoria</option>
+                                                            <?php $all_reg = all_reg("categorias_om", "", $conn); ?>
+                                                            <?php foreach ($all_reg as $key => $value3) { ?>
+                                                                <option value="<?php echo $value3['id']; ?>" <?php if($value3['id'] == $value['id_categoria']){ echo 'selected'; } ?>><?php echo $value3['descripcion']; ?></option>    
+                                                            <?php } ?>
+                                                        </select>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <input class="form-control" value="<?php echo $value['email']; ?>" id="email" type="email" placeholder="name@example.com" name="email" />
-                                                        <label for="email">Email address</label>
+                                                        <input class="form-control" id="username" type="text" placeholder="Username" name="cantidad" value="<?php echo $value['cantidad']; ?>" />
+                                                        <label for="username">Cantidad</label>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <input class="form-control" value="<?php echo $value['nombre']; ?>" id="firstName" type="text" placeholder="First Name" name="nombre" />
-                                                        <label for="firstName">First Name</label>
+                                                        <input class="form-control" id="email" type="text" placeholder="name@example.com" name="precio" value="<?php echo $value['precio']; ?>" />
+                                                        <label for="email">Precio</label>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <input class="form-control" value="<?php echo $value['apellido']; ?>" id="lastName" type="text" placeholder="Last Name" name="apellido" />
-                                                        <label for="lastName">Last Name</label>
+                                                        <p>Imagen actual</p>
+                                                        <img src="<?php echo $value['photo']; ?>" width="300">
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <input class="form-control" id="confirmPassword" type="password" placeholder="Confirm Password" name="pass" />
-                                                        <label for="confirmPassword">Password</label>
+                                                        <input class="form-control" type="file" name="photo" />
+                                                        <label for="email">Subir Nueva Imagen</label>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="btn btn-primary" name="actualizar_user">Actualizar </button>
-                                                    <input type="hidden" name="id_user" value="<?php echo $value['id']; ?>">
+                                                    <button type="submit" class="btn btn-primary" name="update_product">Actualizar </button>
+                                                    <input type="hidden" name="id_product" value="<?php echo $value['id']; ?>">
                                                 </div>
                                             </form>
                                             </div>
@@ -203,17 +268,17 @@ if(isset($_POST['eliminar_user'])){
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Usuario</h1>
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Producto</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <form action="" method="POST">
                                                 <div class="modal-body">
-                                                    Esta seguro que quiere eliminar a <?php echo $value['nombre']. ' ' .$value['apellido']; ?>
+                                                    Esta seguro que quiere eliminar el producto de <?php echo $value['nombre']. ' ' .$value['apellido']; ?>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="btn btn-danger" name="eliminar_user">Eliminar </button>
-                                                    <input type="hidden" name="id_user" value="<?php echo $value['id']; ?>">
+                                                    <button type="submit" class="btn btn-danger" name="eliminar_product">Eliminar </button>
+                                                    <input type="hidden" name="id_product" value="<?php echo $value['id']; ?>">
                                                 </div>
                                             </form>
                                             </div>
