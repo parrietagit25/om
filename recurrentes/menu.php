@@ -23,10 +23,10 @@
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Perfil</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <?php if($_SESSION['tipo_usuario']==2){ ?> 
-                                <li><a class="dropdown-item" href="#!">Mis Compras</a></li>
+                                <li><a class="dropdown-item" href="mis_compras.php">Mis Compras</a></li>
                                 <?php } ?>
                                 <?php if($_SESSION['tipo_usuario']==3){ ?> 
-                                <li><a class="dropdown-item" href="#!">Mis Promosiones</a></li>
+                                <li><a class="dropdown-item" href="mis_promo.php">Mis Promosiones</a></li>
                                 <?php } ?>
                                 <?php if($_SESSION['tipo_usuario']==1){ ?> 
                                 <li><a class="dropdown-item" href="produc_act.php">Productos Activos</a></li>

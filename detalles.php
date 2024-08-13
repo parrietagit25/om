@@ -37,7 +37,11 @@
                                     <div class="d-flex align-items-center mb-3">
                                         <span class="fw-bolder">Total: <span class="precio-total"><?php echo $value['precio']; ?></span> $</span>
                                     </div>
+                                    <?php if(isset($_SESSION['user_id'])){ ?>
                                     <a class="btn btn-outline-dark mt-auto" id="btn-comprar">Comprar</a>
+                                    <?php }else{ ?> 
+                                    <a href="log_user.php" class="btn btn-outline-dark mt-auto">Ingresa</a>
+                                    <?php } ?>
                                     <input type="hidden" class="id_producto" value="<?php echo $value['id']; ?>">
                                     <input type="hidden" name="monto" value="<?php echo $value['precio']; ?>">    
                                 </div>
