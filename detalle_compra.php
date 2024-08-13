@@ -55,8 +55,8 @@ if ($insert) {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'tayronperez17@gmail.com';  
-        $mail->Password = 'wvwwiwnxmdeqssbi';  
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Password = '';  
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;//wvwwiwnxmdeqssbi
         $mail->Port = 587;
 
         $mail->setFrom('ofertasymas@ofmptygroup.com', 'Ofertas&Mas');
