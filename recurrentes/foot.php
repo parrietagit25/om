@@ -30,9 +30,30 @@ document.addEventListener('DOMContentLoaded', function() {
         let cantidad = document.querySelector('input[name="cantidad"]').value;
         let precio = document.querySelector('.precio-total').textContent;
         let idProducto = document.querySelector('.id_producto').value;
+
+        let total = querySelector("total").value;
+        let subtotal = querySelector("subtotal").value;
+        let taxes = querySelector("taxes").value;
+        let discount = querySelector("discount").value;
+        let shipping = querySelector("shipping").value;
+        let successUrl = querySelector("successUrl").value;
+        let failUrl = querySelector("failUrl").value;
+        let orderId = querySelector("orderId").value;
+        let tel = querySelector("tel").value;
+
         formData.append('cantidad', cantidad);
         formData.append('precio', precio);
         formData.append('id_producto', idProducto);
+        formData.append('total', total);
+        formData.append('subtotal', subtotal);
+        formData.append('taxes', taxes);
+        formData.append('discount', discount);
+        formData.append('shipping', shipping);
+        formData.append('successUrl', successUrl);
+        formData.append('failUrl', failUrl);
+        formData.append('orderId', orderId);
+        formData.append('tel', tel);
+        
         fetch('detalle_compra.php', {
             method: 'POST',
             body: formData
@@ -47,4 +68,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cantidadInput = document.querySelector('input[name="cantidad"]');
+        const precioUnitario = parseFloat(document.querySelector('.precio-unitario').innerText);
+        const totalElement = document.querySelector('.precio-total');
+        const totalHidden = document.querySelector('.total-hidden');
+
+        function actualizarTotal() {
+            const cantidad = parseInt(cantidadInput.value);
+            const total = (cantidad * precioUnitario).toFixed(2);
+            totalElement.innerText = total;
+            totalHidden.value = total; // Actualizar el campo oculto con el nuevo total
+        }
+
+        cantidadInput.addEventListener('input', actualizarTotal);
+    });
 </script>

@@ -15,6 +15,7 @@
         "phpmailer/phpmailer": "^6.9",
         "setasign/fpdf": "^1.8",
         "endroid/qr-code": "^4.8",
-        "setasign/fpdi": "^2.6"
+        "setasign/fpdi": "^2.6",
+        "vlucas/phpdotenv": "^5.6"
     }
 }

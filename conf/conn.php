@@ -1,8 +1,15 @@
 <?php
+/* local 
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "om";
+$dbname = "om";  */
+
+/* web */
+$servername = "localhost";
+$username = "ofmptygr_autopedro";
+$password = "Chicho1787$$$";
+$dbname = "ofmptygr_om";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -20,8 +27,10 @@ function insert_reg($tabla, $datos, $conn){
 
     if ($conn->query($sql) === TRUE) {
         echo "Nuevo registro insertado correctamente";
+        return true;
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
+        return false;
     }
 
     //$conn->close();
@@ -112,7 +121,9 @@ function reg_product_vendidos($conn, $id_pro){
                         u.email, 
                         p.titulo, 
                         v.monto_total, 
-                        v.codigo_promo
+                        v.codigo_promo, 
+                        v.stat, 
+                        v.codigo_qr
                         FROM ventas v INNER JOIN users_om u on v.id_user = u.id
                                     INNER JOIN products_om p on v.id_product = p.id
                         WHERE 

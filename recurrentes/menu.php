@@ -27,6 +27,7 @@
                                 <?php } ?>
                                 <?php if($_SESSION['tipo_usuario']==3){ ?> 
                                 <li><a class="dropdown-item" href="mis_promo.php">Mis Promosiones</a></li>
+                                <li><a class="dropdown-item" href="canjear.php">Canjear</a></li>
                                 <?php } ?>
                                 <?php if($_SESSION['tipo_usuario']==1){ ?> 
                                 <li><a class="dropdown-item" href="produc_act.php">Productos Activos</a></li>
