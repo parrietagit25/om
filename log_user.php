@@ -83,7 +83,7 @@
                             </form>
                         </div>
                         <div class="card-footer text-center py-3">
-                            <div class="small"><a href="#!">Need an account? Sign up!</a></div>
+                            <div class="small"><a href="user_reg.php">No tienes una cuenta? Registrate!</a></div>
                         </div>
                     </div>
                 </div>

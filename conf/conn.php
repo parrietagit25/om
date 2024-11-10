@@ -1,15 +1,15 @@
 <?php
-/* local 
+/* local */
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "om";  */
+$dbname = "om";  
 
-/* web */
+/* web 
 $servername = "localhost";
 $username = "ofmptygr_autopedro";
 $password = "Chicho1787$$$";
-$dbname = "ofmptygr_om";
+$dbname = "ofmptygr_om"; */
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -209,6 +209,31 @@ function select_datos_id($tabla, $conn, $condicion){
         $registros[] = $row;
     }
     return $registros;
+}
+
+function contar_productos($id_user, $id_condicion, $conn){
+
+    if ($id_condicion == 1) {
+        $condicion = ' and v.stat = 2 ';
+    }elseif ($id_condicion == 2) {
+        $condicion = ' and v.stat = 1 ';
+    }else {
+        $condicion = '';
+    }
+
+    $reg = $conn->query("SELECT
+                        count(*) as contar
+                        FROM ventas v INNER JOIN users_om u on v.id_user = u.id
+                                      INNER JOIN products_om p on v.id_product = p.id
+                        WHERE 
+                        v.id_user = '".$id_user."'
+                        $condicion");
+    ///$registros = [];
+    while($row = $reg->fetch_assoc()) {
+        $registros = $row['contar'];
+    }
+    return $registros;
+
 }
 
 

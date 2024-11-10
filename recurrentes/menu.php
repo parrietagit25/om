@@ -23,6 +23,7 @@
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Perfil</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <?php if($_SESSION['tipo_usuario']==2){ ?> 
+                                <li><a class="dropdown-item" href="perfil.php">Resumen</a></li>
                                 <li><a class="dropdown-item" href="mis_compras.php">Mis Compras</a></li>
                                 <?php } ?>
                                 <?php if($_SESSION['tipo_usuario']==3){ ?> 
@@ -40,13 +41,13 @@
                         </li>
                         <?php } ?>
                     </ul>
-                    <form class="d-flex">
+                    <!--<form class="d-flex">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
                             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                         </button>
-                    </form>
+                    </form>-->
                 </div>
             </div>
         </nav>
