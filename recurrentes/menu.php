@@ -27,12 +27,12 @@
                                 <li><a class="dropdown-item" href="mis_compras.php">Mis Compras</a></li>
                                 <?php } ?>
                                 <?php if($_SESSION['tipo_usuario']==3){ ?> 
+                                <li><a class="dropdown-item" href="perfil.php">Resumen</a></li>
                                 <li><a class="dropdown-item" href="mis_promo.php">Mis Promosiones</a></li>
                                 <li><a class="dropdown-item" href="canjear.php">Canjear</a></li>
                                 <?php } ?>
                                 <?php if($_SESSION['tipo_usuario']==1){ ?> 
-                                <li><a class="dropdown-item" href="produc_act.php">Productos Activos</a></li>
-                                <li><a class="dropdown-item" href="ventas.php">Ventas</a></li>
+                                <li><a class="dropdown-item" href="perfil.php">Resumen</a></li>
                                 <li><a class="dropdown-item" href="produc_sys.php">Reg. Productos</a></li>
                                 <li><a class="dropdown-item" href="users_sys.php">Reg. Usuarios</a></li>
                                 <?php } ?>

@@ -12,4 +12,20 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <style>
+        .modal-dialog {
+            max-width: 80%; 
+        }
+
+        .modal-body {
+            max-height: 400px;
+            overflow-y: auto; 
+        }
+
+        table {
+            width: 100%; 
+            table-layout: fixed; 
+            word-wrap: break-word; 
+        }
+    </style>
 </head>

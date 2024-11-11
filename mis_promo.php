@@ -57,8 +57,10 @@ if(!isset($_SESSION['user_id'])){
                                     <!-- Imagen QR con enlace al modal -->
                                     <td>
                                         <?php if (!empty($value['codigo_qr'])) { ?>
-                                            <img src="qr/qr_<?php echo $value['codigo_qr']; ?>.png" width="50" class="qr-img" data-toggle="modal" data-target="#qrModal" data-qr="qr/qr_<?php echo $value['codigo_qr']; ?>.png">
-                                        <?php } else { ?>
+                                            <a href="qr/qr_<?php echo $value['codigo_qr']; ?>.png" target="_blank" rel="">
+                                                <img src="qr/qr_<?php echo $value['codigo_qr']; ?>.png" width="50" class="qr-img" data-toggle="modal" data-target="#qrModal" data-qr="qr/qr_<?php echo $value['codigo_qr']; ?>.png">
+                                            </a>
+                                            <?php } else { ?>
                                             <span>No disponible</span>
                                         <?php } ?>
                                     </td>

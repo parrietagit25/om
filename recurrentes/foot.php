@@ -86,3 +86,99 @@ document.addEventListener('DOMContentLoaded', function() {
         cantidadInput.addEventListener('input', actualizarTotal);
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const detailsModal = document.getElementById('detailsModal');
+        
+        detailsModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget; // Botón que activó el modal
+            const content = button.getAttribute('data-content'); // Obtener el contenido personalizado (opcional)
+            const tipo_conteo = button.getAttribute('data-id'); // Obtener el ID del usuario
+            const modalContent = detailsModal.querySelector('#modalContent');
+            const detailLink = detailsModal.querySelector('#detailLink');
+
+            // Mostrar un mensaje de carga mientras se obtiene la información
+            modalContent.innerHTML = "<p>Cargando...</p>";
+
+            // Realizar la solicitud fetch
+            fetch(`detalle_perfil.php?tipo_conteo=${tipo_conteo}`)
+                .then(response => response.text()) // Asumimos que detalle_perfil.php devuelve HTML para mostrar en el modal
+                .then(data => {
+                    // Actualizar el contenido del modal con la respuesta de detalle_perfil.php
+                    modalContent.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos:', error);
+                    modalContent.innerHTML = "<p>Error al cargar los detalles. Intenta nuevamente.</p>";
+                });
+            
+            // Establecer enlace o realizar otras acciones (si es necesario)
+            detailLink.href = "#"; // Modifica el enlace si es necesario
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ProductosCanjeados = document.getElementById('ProductosCanjeados');
+        
+        ProductosCanjeados.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget; // Botón que activó el modal
+            const content = button.getAttribute('data-content'); // Obtener el contenido personalizado (opcional)
+            const tipo_conteo = button.getAttribute('data-id'); // Obtener el ID del usuario
+            const modalContent = ProductosCanjeados.querySelector('#modalContent');
+            const detailLink = ProductosCanjeados.querySelector('#detailLink');
+
+            // Mostrar un mensaje de carga mientras se obtiene la información
+            modalContent.innerHTML = "<p>Cargando...</p>";
+
+            // Realizar la solicitud fetch
+            fetch(`detalle_perfil.php?tipo_conteo=${tipo_conteo}`)
+                .then(response => response.text()) // Asumimos que detalle_perfil.php devuelve HTML para mostrar en el modal
+                .then(data => {
+                    // Actualizar el contenido del modal con la respuesta de detalle_perfil.php
+                    modalContent.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos:', error);
+                    modalContent.innerHTML = "<p>Error al cargar los detalles. Intenta nuevamente.</p>";
+                });
+            
+            // Establecer enlace o realizar otras acciones (si es necesario)
+            detailLink.href = "#"; // Modifica el enlace si es necesario
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ProductosNoCanjeados = document.getElementById('ProductosNoCanjeados');
+        
+        ProductosNoCanjeados.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget; // Botón que activó el modal
+            const content = button.getAttribute('data-content'); // Obtener el contenido personalizado (opcional)
+            const tipo_conteo = button.getAttribute('data-id'); // Obtener el ID del usuario
+            const modalContent = ProductosNoCanjeados.querySelector('#modalContent');
+            const detailLink = ProductosNoCanjeados.querySelector('#detailLink');
+
+            // Mostrar un mensaje de carga mientras se obtiene la información
+            modalContent.innerHTML = "<p>Cargando...</p>";
+
+            // Realizar la solicitud fetch
+            fetch(`detalle_perfil.php?tipo_conteo=${tipo_conteo}`)
+                .then(response => response.text()) // Asumimos que detalle_perfil.php devuelve HTML para mostrar en el modal
+                .then(data => {
+                    // Actualizar el contenido del modal con la respuesta de detalle_perfil.php
+                    modalContent.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos:', error);
+                    modalContent.innerHTML = "<p>Error al cargar los detalles. Intenta nuevamente.</p>";
+                });
+            
+            // Establecer enlace o realizar otras acciones (si es necesario)
+            detailLink.href = "#"; // Modifica el enlace si es necesario
+        });
+    });
+</script>

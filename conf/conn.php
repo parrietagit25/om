@@ -1,15 +1,15 @@
 <?php
-/* local */
+/* local 
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "om";  
+$dbname = "om";  */
 
-/* web 
+/* web  */
 $servername = "localhost";
 $username = "ofmptygr_autopedro";
 $password = "Chicho1787$$$";
-$dbname = "ofmptygr_om"; */
+$dbname = "ofmptygr_om";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -147,11 +147,124 @@ function reg_product_comprados($conn, $id_pro){
                         u.email, 
                         p.titulo, 
                         v.monto_total, 
-                        v.codigo_promo
-                        FROM ventas v INNER JOIN users_om u on v.id_user = u.id
-                                    INNER JOIN products_om p on v.id_product = p.id
+                        v.cantidad,
+                        v.codigo_promo, 
+                        v.stat,
+                        v.codigo_qr
+                        FROM ventas v INNER JOIN products_om p on v.id_product = p.id
+                                      INNER JOIN users_om u on p.id_business_partner = u.id
                         WHERE 
                         v.id_user = '".$id_pro."'");
+    
+    $registros = [];
+    while($row = $reg->fetch_assoc()) {
+    $registros[] = $row;
+    }
+    return $registros;
+    //$conn->close();
+
+}
+
+function tabla_product_vendidos($conn, $stat){
+
+    if ($stat == 3) {
+        $where = ' WHERE v.stat = 1';
+    }elseif ($stat == 2) {
+        $where = ' WHERE v.stat = 2';
+    }elseif ($stat == 1) {
+        $where = '';
+    }
+                
+    $reg = $conn->query("SELECT
+                        v.id,
+                        u.nombre, 
+                        u.apellido, 
+                        u.email, 
+                        p.titulo, 
+                        v.monto_total, 
+                        v.cantidad,
+                        v.codigo_promo, 
+                        v.stat,
+                        v.codigo_qr
+                        FROM ventas v INNER JOIN products_om p on v.id_product = p.id
+                                      INNER JOIN users_om u on p.id_business_partner = u.id
+                        $where");
+    
+    $registros = [];
+    while($row = $reg->fetch_assoc()) {
+    $registros[] = $row;
+    }
+    return $registros;
+    //$conn->close();
+
+}
+
+function reg_product_comprados_cliente($conn, $stat, $id_pro){
+
+    if ($stat == 3) {
+        $where = ' and v.stat = 1';
+    }elseif ($stat == 2) {
+        $where = ' and v.stat = 2';
+    }elseif ($stat == 1) {
+        $where = '';
+    }else {
+        $where = '';
+    }
+                
+    $reg = $conn->query("SELECT
+                        v.id,
+                        u.nombre, 
+                        u.apellido, 
+                        u.email, 
+                        p.titulo, 
+                        v.monto_total, 
+                        v.cantidad,
+                        v.codigo_promo, 
+                        v.stat,
+                        v.codigo_qr
+                        FROM ventas v INNER JOIN products_om p on v.id_product = p.id
+                                      INNER JOIN users_om u on p.id_business_partner = u.id
+                        WHERE 
+                        v.id_user = '".$id_pro."'
+                        $where");
+    
+    $registros = [];
+    while($row = $reg->fetch_assoc()) {
+    $registros[] = $row;
+    }
+    return $registros;
+    //$conn->close();
+
+}
+
+function tabla_product_vendidos_socio($conn, $stat, $id_user){
+
+    if ($stat == 3) {
+        $where = ' WHERE v.stat = 1';
+    }elseif ($stat == 2) {
+        $where = ' WHERE v.stat = 2';
+    }elseif ($stat == 1) {
+        $where = '';
+    }else {
+        $where = '';
+    }
+                
+    $reg = $conn->query("SELECT
+                        v.id,
+                        u.nombre, 
+                        u.apellido, 
+                        u.email, 
+                        p.titulo, 
+                        v.monto_total, 
+                        v.cantidad,
+                        v.codigo_promo, 
+                        v.stat,
+                        v.codigo_qr
+                        FROM ventas v INNER JOIN products_om p on v.id_product = p.id
+                                      INNER JOIN users_om u on p.id_business_partner = u.id
+                        $where
+                        and 
+                        p.id_business_partner = $id_user");
     
     $registros = [];
     while($row = $reg->fetch_assoc()) {
@@ -214,9 +327,9 @@ function select_datos_id($tabla, $conn, $condicion){
 function contar_productos($id_user, $id_condicion, $conn){
 
     if ($id_condicion == 1) {
-        $condicion = ' and v.stat = 2 ';
-    }elseif ($id_condicion == 2) {
         $condicion = ' and v.stat = 1 ';
+    }elseif ($id_condicion == 2) {
+        $condicion = ' and v.stat = 2 ';
     }else {
         $condicion = '';
     }
@@ -231,6 +344,132 @@ function contar_productos($id_user, $id_condicion, $conn){
     ///$registros = [];
     while($row = $reg->fetch_assoc()) {
         $registros = $row['contar'];
+    }
+    return $registros;
+
+}
+
+
+function monto_productos($id_user, $id_condicion, $conn){
+
+    if ($id_condicion == 1) {
+        $condicion = ' and v.stat = 1 ';
+    }elseif ($id_condicion == 2) {
+        $condicion = ' and v.stat = 2 ';
+    }else {
+        $condicion = '';
+    }
+
+    $reg = $conn->query("SELECT
+                        sum(v.monto_total) as monto
+                        FROM ventas v INNER JOIN products_om p on v.id_product = p.id
+                                      INNER JOIN users_om u on p.id_business_partner = u.id
+                        WHERE 
+                        u.id = '".$id_user."'
+                        $condicion");
+    ///$registros = [];
+    while($row = $reg->fetch_assoc()) {
+        $registros = $row['monto'];
+    }
+    return $registros;
+
+}
+
+function contar_productos_admin($id_user, $id_condicion, $conn){
+
+    if ($id_condicion == 1) {
+        $condicion = ' WHERE v.stat = 1 ';
+    }elseif ($id_condicion == 2) {
+        $condicion = ' WHERE v.stat = 2 ';
+    }else {
+        $condicion = '';
+    }
+
+    $reg = $conn->query("SELECT
+                        count(*) as contar
+                        FROM ventas v INNER JOIN users_om u on v.id_user = u.id
+                                      INNER JOIN products_om p on v.id_product = p.id
+                         
+                        $condicion");
+
+    ///$registros = [];
+    while($row = $reg->fetch_assoc()) {
+        $registros = $row['contar'];
+    }
+    return $registros;
+
+}
+
+
+function monto_productos_admin($id_user, $id_condicion, $conn){
+
+    if ($id_condicion == 1) {
+        $condicion = ' WHERE v.stat = 1 ';
+    }elseif ($id_condicion == 2) {
+        $condicion = ' WHERE v.stat = 2 ';
+    }else {
+        $condicion = '';
+    }
+
+    $reg = $conn->query("SELECT
+                        sum(v.monto_total) as monto
+                        FROM ventas v INNER JOIN products_om p on v.id_product = p.id
+                                      INNER JOIN users_om u on p.id_business_partner = u.id 
+                        $condicion");
+    ///$registros = [];
+    while($row = $reg->fetch_assoc()) {
+        $registros = $row['monto'];
+    }
+    return $registros;
+
+}
+
+function contar_productos_socio($id_user, $id_condicion, $conn){
+
+    if ($id_condicion == 1) {
+        $condicion = ' and v.stat = 1 ';
+    }elseif ($id_condicion == 2) {
+        $condicion = ' and v.stat = 2 ';
+    }else {
+        $condicion = '';
+    }
+
+    $reg = $conn->query("SELECT
+                        count(*) as contar
+                        FROM ventas v INNER JOIN users_om u on v.id_user = u.id
+                                      INNER JOIN products_om p on v.id_product = p.id
+                        WHERE 
+                        p.id_business_partner = '".$id_user."'
+                        $condicion");
+    ///$registros = [];
+    while($row = $reg->fetch_assoc()) {
+        $registros = $row['contar'];
+    }
+    return $registros;
+
+}
+
+
+function monto_productos_socio($id_user, $id_condicion, $conn){
+
+    if ($id_condicion == 1) {
+        $condicion = ' and v.stat = 1 ';
+    }elseif ($id_condicion == 2) {
+        $condicion = ' and v.stat = 2 ';
+    }else {
+        $condicion = '';
+    }
+
+    $reg = $conn->query("SELECT
+                        sum(v.monto_total) as monto
+                        FROM ventas v INNER JOIN products_om p on v.id_product = p.id
+                                      INNER JOIN users_om u on p.id_business_partner = u.id
+                        WHERE 
+                        p.id_business_partner = '".$id_user."'
+                        $condicion");
+    ///$registros = [];
+    while($row = $reg->fetch_assoc()) {
+        $registros = $row['monto'];
     }
     return $registros;
 

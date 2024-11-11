@@ -10,6 +10,7 @@ $data = array(
     "CMTN" => $_POST['total'],
     "CDSC" => $_POST['titulo'],
     "RETURN_URL" => 'https://ofmptygroup.com/resp_paguelofacil.php',
+    //"RETURN_URL" => 'http://localhost/om/resp_paguelofacil.php',
     "PARM_1" => $_POST['id_product'],
     "PARM_2" => $_SESSION['user_id'],
     "PARM_3" => $_POST['cantidad'],
