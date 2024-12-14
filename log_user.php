@@ -22,6 +22,7 @@
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['tipo_usuario'] = $user['tipo_user'];
+                    $_SESSION['nombre_completo'] = $user['nombre'].' '.$user['apellido'];
         
                     echo "Login exitoso. Bienvenido, " . $user['username'] . "!";
 

@@ -16,33 +16,33 @@
         $mensaje = 'Registre Realizado';
 
           // Incluir el autoload de Composer para PHPMailer
-
+          
           $mail = new PHPMailer(true);
-
+          
           try {
-              // Configuración del servidor SMTP de Gmail
+              // Configuración del servidor SMTP
               $mail->isSMTP();
-              //$mail->SMTPDebug = 2;
-              $mail->Host = 'smtp.gmail.com';  // Servidor SMTP de Gmail
-              $mail->SMTPAuth = true;  // Habilitar la autenticación SMTP
-              $mail->Username = 'tayronperez17@gmail.com';  // Tu dirección de correo electrónico de Gmail
-              $mail->Password = '';  // Tu contraseña de Gmail o App Password wvww iwnx mdeq ssbi
-              $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  // Habilitar TLS encriptación wvwwiwnxmdeqssbi
-              $mail->Port = 587;  // Puerto TCP para TLS
+              $mail->Host = 'mail.ofmptygroup.com'; // Servidor SMTP
+              $mail->SMTPAuth = true; // Autenticación habilitada
+              $mail->Username = 'info@ofmptygroup.com'; // Usuario de correo
+              $mail->Password = ''; // Contraseña de la cuenta
+              $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Usar encriptación SSL/TLS
+              $mail->Port = 465; // Puerto para SSL
           
-              // Configuración adicional...
-              $mail->setFrom('ofertasymas@ofmptygroup.com', 'Ofertas&Mas');
-              $mail->addAddress($_POST['email'], $_POST['nombre']);
-              $mail->isHTML(true);
+              // Configuración adicional del correo
+              $mail->setFrom('info@ofmptygroup.com', 'Ofertas&Mas'); // Dirección de remitente
+              $mail->addAddress($_POST['email'], $_POST['nombre']); // Dirección del destinatario
+              $mail->isHTML(true); // Configuración para correo en HTML
               $mail->Subject = 'Bienvenido a Ofertas&Mas';
-              $mail->Body    = 'Usted se ha registrado en la plataforma Ofertas & Mas, ya puede ingresar al sistema y adquirir nuetras ofertas';
-              $mail->AltBody = 'Usted se ha registrado en la plataforma Ofertas & Mas, ya puede ingresar al sistema y adquirir nuetras ofertas';
+              $mail->Body = 'Usted se ha registrado en la plataforma Ofertas & Mas, ya puede ingresar al sistema y adquirir nuestras ofertas.';
+              $mail->AltBody = 'Usted se ha registrado en la plataforma Ofertas & Mas, ya puede ingresar al sistema y adquirir nuestras ofertas.';
           
+              // Enviar correo
               $mail->send();
               echo 'El mensaje ha sido enviado con éxito';
           } catch (Exception $e) {
               echo "El mensaje no pudo ser enviado. Error de PHPMailer: {$mail->ErrorInfo}";
-          }
+          }          
 
 } ?>
 <!DOCTYPE html>
