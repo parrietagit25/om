@@ -1,5 +1,6 @@
 <footer class="py-5 bg-dark">
     <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Ofertas&Mas 2024</p></div>
+    <div class="container"><a href="proteccion_datos.php" class="m-0 text-center text-white">Protección de Información</a></div>
 </footer>
 <!-- Bootstrap core JS-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
